@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sign In Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('../static/images/regback.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 1.2rem;
+            color: white;
+        }
+        input::placeholder {
+            color: white;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <!-- Flash Messages Section -->
+    <!-- Flash Messages Section -->
+    <div class="absolute top-4 left-1/2 transform -translate-x-1/2">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }} p-4 mb-4 rounded-lg">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col items-center justify-center p-8 md:w-1/2">
+            <h2 class="text-2xl font-semibold mb-4">sign in to</h2>
+            <h1 class="text-4xl font-bold mb-8">VISION AI</h1>
+            <!-- Add a form element here -->
+            <form action="/login" method="POST" class="w-full">
+                <div class="w-full mb-4">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-user"></i>
+                        <input class="ml-4" placeholder="username" type="text" name="username" required/>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-lock"></i>
+                        <input class="ml-4" placeholder="password" type="password" name="password" required/>
+                    </div>
+                </div>
+                <button type="submit" class="bg-transparent border-2 border-white text-white font-semibold py-2 px-8 rounded-full z-10">sign in</button>
+            </form>
+        </div>
+        <div class="flex flex-col items-center justify-center p-8 md:w-1/2">
+            <h2 class="text-4xl font-bold mb-4">hello friend !</h2>
+            <p class="text-lg mb-8">Start a journey with us today.</p>
+            <a href="/register">
+                <button class="bg-transparent border-2 border-white text-white font-semibold py-2 px-8 rounded-full z-10">sign up</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

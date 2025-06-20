@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowd Control Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at bottom right, #a50075, #3d033b, #000000);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            height: 100vh;
+            padding-top: 20px;
+        }
+        .setup-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(198, 38, 158, 0.5);
+            margin-bottom: 20px;
+            border: 2px solid #7a126a;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+        }
+        #setupCanvas {
+            width: 100%;
+            border: 3px solid #c6269e;
+            border-radius: 10px;
+            background-color: black;
+        }
+        .instructions {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #7a126a;
+        }
+        h1, h3, h5, .lead {
+            color: white;
+        }
+        h1 span, h3 span {
+            color: #ff00ff;
+        }
+        .form-label, .form-check-label {
+            color: white;
+        }
+        .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #c6269e, #7a126a);
+            border: none;
+            font-weight: bold;
+            height: 50px;
+            font-size: 18px;
+        }
+        .btn-primary:hover {
+            background: #c6269e;
+        }
+        .btn-secondary {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #7a126a;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: bold;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(50, 50, 50, 0.7);
+            border: 1px solid #c6269e;
+            color: white;
+        }
+        .form-control, .form-select {
+            background-color: rgba(50, 50, 50, 0.7);
+            border: 1px solid #7a126a;
+            color: white;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(70, 70, 70, 0.7);
+            border: 1px solid #c6269e;
+            color: white;
+            box-shadow: 0 0 5px rgba(198, 38, 158, 0.5);
+        }
+        .form-select option {
+            background-color: #333;
+        }
+        .form-check-input:checked {
+            background-color: #c6269e;
+            border-color: #7a126a;
+        }
+        .input-group-file {
+            position: relative;
+        }
+        .input-group-file input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row text-center mb-4">
+            <div class="col">
+                <div class="position-relative">
+                    <h1 class="display-4">VISION <span>AI</span> - Crowd Control Setup</h1>
+                </div>
+                <p class="lead">Configure your monitoring parameters</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="setup-container">
+                    <h3 class="mb-4">Draw Counting Line</h3>
+                    
+                    <div class="canvas-container">
+                        <canvas id="setupCanvas" width="640" height="480"></canvas>
+                    </div>
+                    
+                    <div class="instructions">
+                        <h5>How to draw the counting line:</h5>
+                        <ol>
+                            <li>Click on the canvas to set the start point</li>
+                            <li>Click again to set the end point</li>
+                            <li>The line will be used to count people crossing it</li>
+                        </ol>
+                        <p class="text-muted">Line coordinates: <span id="lineCoords">Not set</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="setup-container">
+                    <h3 class="mb-4">Configuration</h3>
+                    
+                    <form id="setupForm">
+                        <div class="mb-3">
+                            <label for="sourceChoice" class="form-label">Select Input Source:</label>
+                            <select class="form-select" id="sourceChoice" name="source_choice">
+                                <option value="1">Webcam</option>
+                                <option value="2">Video File</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3" id="videoFileGroup" style="display: none;">
+                            <label for="videoFile" class="form-label">Video File:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="videoFile" name="video_file" readonly>
+                                <div class="input-group-append">
+                                    <label class="btn btn-secondary input-group-file">
+                                        Browse
+                                        <input type="file" id="videoFileBrowse" accept="video/*" style="display:none;">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="peopleLimit" class="form-label">Maximum Number of People Allowed:</label>
+                            <input type="number" class="form-control" id="peopleLimit" name="people_limit" value="1" min="1">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Inside Area:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="inside_choice" id="insideAbove" value="1" checked>
+                                <label class="form-check-label" for="insideAbove">Above the Line</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="inside_choice" id="insideBelow" value="2">
+                                <label class="form-check-label" for="insideBelow">Below the Line</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden fields for line coordinates -->
+                        <input type="hidden" id="lineX1" name="line_x1" value="0">
+                        <input type="hidden" id="lineY1" name="line_y1" value="0">
+                        <input type="hidden" id="lineX2" name="line_x2" value="0">
+                        <input type="hidden" id="lineY2" name="line_y2" value="0">
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Save Configuration</button>
+                            <a href="{{ url_for('crowd_bp.crowd_index') }}" class="btn btn-secondary">Back to Monitoring</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const canvas = document.getElementById('setupCanvas');
+            const ctx = canvas.getContext('2d');
+            let videoElement = null; // Global variable to store the video element
+
+            function clearCanvas() {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            clearCanvas();
+
+            let drawing = false;
+            let lineStart = {x: 0, y: 0};
+            let lineEnd = {x: 0, y: 0};
+
+            function drawLine() {
+                // Clear the canvas
+                clearCanvas();
+
+                // Redraw the first frame of the video or webcam preview
+                if (videoElement) {
+                    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                }
+
+                // Draw the red line
+                ctx.beginPath();
+                ctx.moveTo(lineStart.x, lineStart.y);
+                ctx.lineTo(lineEnd.x, lineEnd.y);
+                ctx.strokeStyle = '#c6269e'; // Red color
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Update line coordinates display
+                $('#lineCoords').text(`(${lineStart.x}, ${lineStart.y}) to (${lineEnd.x}, ${lineEnd.y})`);
+
+                // Update hidden form fields
+                $('#lineX1').val(lineStart.x);
+                $('#lineY1').val(lineStart.y);
+                $('#lineX2').val(lineEnd.x);
+                $('#lineY2').val(lineEnd.y);
+            }
+
+            // Function to get correct mouse coordinates relative to the canvas
+            function getMousePos(canvas, evt) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;  // Scale for canvas width
+                const scaleY = canvas.height / rect.height; // Scale for canvas height
+
+                return {
+                    x: (evt.clientX - rect.left) * scaleX,
+                    y: (evt.clientY - rect.top) * scaleY
+                };
+            }
+
+            $(canvas).click(function(e) {
+                const mousePos = getMousePos(canvas, e);
+                const x = Math.round(mousePos.x);
+                const y = Math.round(mousePos.y);
+
+                if (!drawing) {
+                    lineStart = {x, y};
+                    lineEnd = {x, y};
+                    drawing = true;
+                } else {
+                    lineEnd = {x, y};
+                    drawing = false;
+                }
+
+                drawLine();
+            });
+
+            $(canvas).mousemove(function(e) {
+                if (drawing) {
+                    const mousePos = getMousePos(canvas, e);
+                    const x = Math.round(mousePos.x);
+                    const y = Math.round(mousePos.y);
+
+                    lineEnd = {x, y};
+                    drawLine();
+                }
+            });
+
+            $('#sourceChoice').change(function() {
+                if ($(this).val() === '2') {
+                    $('#videoFileGroup').show();
+                } else {
+                    $('#videoFileGroup').hide();
+                }
+                loadPreview();
+            });
+
+            $('#videoFileBrowse').change(function() {
+                if (this.files && this.files[0]) {
+                    $('#videoFile').val(this.files[0].name);
+                    loadPreview();
+                }
+            });
+
+            function loadPreview() {
+                const sourceChoice = $('#sourceChoice').val();
+                const videoFile = $('#videoFileBrowse')[0].files[0];
+
+                if (sourceChoice === '1') {
+                    // Webcam preview
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(function(stream) {
+                            videoElement = document.createElement('video');
+                            videoElement.srcObject = stream;
+                            videoElement.play();
+
+                            // Capture the first frame
+                            videoElement.onloadeddata = function() {
+                                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                                // Stop the webcam stream after capturing the first frame
+                                stream.getTracks().forEach(track => track.stop());
+                            };
+                        })
+                        .catch(function(error) {
+                            console.error('Error accessing webcam:', error);
+                        });
+                } else if (sourceChoice === '2' && videoFile) {
+                    // Video file preview
+                    videoElement = document.createElement('video');
+                    videoElement.src = URL.createObjectURL(videoFile);
+                    videoElement.muted = true;
+
+                    // Capture the first frame
+                    videoElement.onloadeddata = function() {
+                        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                        URL.revokeObjectURL(videoElement.src); // Clean up the object URL
+                        videoElement.pause(); // Stop the video after capturing the first frame
+                    };
+
+                    videoElement.play();
+                } else {
+                    clearCanvas();
+                }
+            }
+
+            // Load saved settings from localStorage
+            function loadSavedSettings() {
+                const sourceChoice = localStorage.getItem('source_choice');
+                if (sourceChoice) {
+                    $('#sourceChoice').val(sourceChoice);
+                    if (sourceChoice === '2') {
+                        $('#videoFileGroup').show();
+                    }
+                }
+
+                const videoFile = localStorage.getItem('video_file');
+                if (videoFile) {
+                    $('#videoFile').val(videoFile);
+                }
+
+                const peopleLimit = localStorage.getItem('people_limit');
+                if (peopleLimit) {
+                    $('#peopleLimit').val(peopleLimit);
+                }
+
+                const insideChoice = localStorage.getItem('inside_choice');
+                if (insideChoice) {
+                    $(`input[name="inside_choice"][value="${insideChoice}"]`).prop('checked', true);
+                }
+
+                // Load line coordinates
+                const lineX1 = localStorage.getItem('line_x1');
+                const lineY1 = localStorage.getItem('line_y1');
+                const lineX2 = localStorage.getItem('line_x2');
+                const lineY2 = localStorage.getItem('line_y2');
+
+                if (lineX1 && lineY1 && lineX2 && lineY2) {
+                    lineStart = {x: parseInt(lineX1), y: parseInt(lineY1)};
+                    lineEnd = {x: parseInt(lineX2), y: parseInt(lineY2)};
+                    drawLine();
+                }
+            }
+
+            // Save settings to localStorage
+            $('#setupForm').submit(function(e) {
+                e.preventDefault();
+
+                localStorage.setItem('source_choice', $('#sourceChoice').val());
+                localStorage.setItem('video_file', $('#videoFile').val());
+                localStorage.setItem('people_limit', $('#peopleLimit').val());
+                localStorage.setItem('inside_choice', $('input[name="inside_choice"]:checked').val());
+
+                localStorage.setItem('line_x1', lineStart.x);
+                localStorage.setItem('line_y1', lineStart.y);
+                localStorage.setItem('line_x2', lineEnd.x);
+                localStorage.setItem('line_y2', lineEnd.y);
+
+                alert('Configuration saved successfully!');
+                window.location.href = "{{ url_for('crowd_bp.crowd_index') }}";
+            });
+
+            // Load settings when page loads
+            loadSavedSettings();
+        });
+    </script>
+</body>
+</html>

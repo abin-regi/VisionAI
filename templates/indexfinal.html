@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <!-- Loading Screen Specific Styles -->
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Michroma&display=swap");
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-image: url(../static/images/loading.jpg);
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            color: #191654;
+            z-index: 9999; /* Ensure loading page stays on top */
+        }
+
+        #svg {
+            height: 150px;
+            width: 150px;
+            stroke: white;
+            fill-opacity: 0;
+            stroke-width: 3px;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: draw 8s ease forwards;
+        }
+
+        @keyframes draw {
+            0% {
+                stroke-dashoffset: 2000;
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+        }
+
+        .name-container {
+            height: 30px;
+            overflow: hidden;
+        }
+
+        .logo-name {
+            color: #fff;
+            font-size: 20px;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            margin-left: 20px;
+            font-weight: bolder;
+            opacity: 0; /* Start with text hidden */
+        }
+
+        /* Original Styles */
+        /* First Section Styles */
+        .first-section {
+            background: url("../static/images/VIjpg.jpg");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            color: white;
+            position: relative;
+        }
+
+        /* Second Section Styles */
+        .second-section {
+            background-image: url('../static/images/VIKKK.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .left-section {
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-section {
+            width: 70%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            font-weight: bold;
+        }
+
+        .title-section {
+            text-align: left;
+            margin-top: 190px;
+            margin-left: 350px;
+        }
+
+        .title {
+            font-size: 80px;
+            font-weight: 800;
+        }
+
+        .title span {
+            color: #C6269E;
+        }
+
+        .features-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 1px;
+        }
+
+        .feature-column {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .left-features {
+            align-items: flex-start;
+        }
+
+        .right-features {
+            align-items: flex-start;
+        }
+
+        .feature-box {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .feature-box::before {
+            content: "";
+            width: 15px;
+            height: 15px;
+            background: #C6269E;
+            display: inline-block;
+        }
+
+        .ai-surveillance {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 25px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.2);
+            text-align: left;
+        }
+
+        /* Third Section Styles */
+        .third-section {
+            background-image: url('../static/images/backg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .functions-title {
+            text-align: center;
+            font-size: 36px;
+            margin-top: 80px;
+        }
+
+        .functions-grid-container {
+            margin-top: 50px;
+        }
+
+        .functions-grid {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .function-card {
+            width: 220px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .function-card:hover {
+            transform: scale(1.05);
+        }
+
+        .function-card img {
+            width: 100%;
+            height: 220px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .function-card p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Fourth Section (About) Styles */
+        .fourth-section {
+            background-image: url('../static/images/aboubagg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fourth-section .content {
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-page">
+        <!-- 3D-like "V" SVG -->
+        <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+                d="M256 512L0 0h128l64 160L320 0h128L256 512zM128 0l128 320L384 0h-64L256 192 192 0h-64z"
+                fill="none"
+                stroke="white"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+
+        <div class="name-container">
+            <div class="logo-name">vision AI</div>
+        </div>
+    </div>
+
+    <!-- Main Content (Original index.html) -->
+    <div id="main-content" style="display: none; opacity: 0;">
+        <!-- First Section -->
+        <section id="first-section" class="first-section text-white px-16 py-12">
+            <!-- Top Right Login/Register Buttons -->
+            <div class="absolute top-6 right-6 flex space-x-4">
+                {% if current_user.is_authenticated %}
+                    <!-- Display Welcome Message if User is Logged In -->
+                    <div class="flex items-center space-x-2">
+                        <span class="text-white font-bold">Welcome, {{ current_user.username }}!</span>
+                        <a href="/logout">
+                            <button class="bg-[#C6269E] text-white py-2 px-6 rounded-full font-bold shadow-md">Logout</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <!-- Display Login and Register Buttons if User is Not Logged In -->
+                    <a href="/login">
+                        <button class="bg-[#C6269E] text-white py-2 px-6 rounded-full font-bold shadow-md">LOG IN</button>
+                    </a>
+                    <a href="/register">
+                        <button class="bg-[#C6269E] text-white py-2 px-6 rounded-full font-bold shadow-md">REGISTER</button>
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Main Content -->
+            <div class="mt-40 ml-40">
+                <h1 class="text-[120px] font-extrabold">
+                    VISION <span class="text-[#C6269E]">AI</span>
+                </h1>
+
+                <!-- Subtitle & Arrow -->
+                <div class="mt-4 flex items-center space-x-4 ml-10">
+                    <div class="border-l-4 border-[#C6269E] pl-6" style="color:grey">
+                        <p class="text-3xl font-bold">AI POWERED VIDEO</p>
+                        <p class="text-3xl font-bold">SURVEILLANCE</p>
+                        <p class="text-3xl font-bold">ASSISTANT</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-4xl"></i>
+                </div>
+
+                <!-- Get Started Button -->
+                <button onclick="scrollToThirdSection()" class="mt-10 bg-[#C6269E] text-white py-3 px-8 text-xl font-bold rounded-full shadow-lg hover:bg-pink-700 ml-10">
+                    GET STARTED
+                </button>
+            </div>
+        </section>
+
+        <!-- Second Section -->
+        <section class="second-section">
+            <div class="header" style="margin-left: 100px; font-size: 25px;">
+                <div>VISION <span style="color:#C6269E;">AI</span></div>
+                <!-- HOME Button -->
+                <div style="margin-right: 50px; cursor: pointer;" onclick="scrollToFirstSection()">HOME</div>
+            </div>
+            
+            <div class="container">
+                <!-- Left Section: Title -->
+                <div class="left-section">
+                    <div class="title-section">
+                        <div class="title" style="margin-bottom: 0; line-height: 1; font-size: 120px;">KEY</div>
+                        <div class="title" style="margin-top: 0; line-height: 1;font-size: 70px;"><span>FEATURES</span></div>
+                    </div>
+                </div>
+                
+                <!-- Right Section: Features and Descriptions -->
+                <div class="right-section" style="margin-top: 100px;">
+                    <div class="features-section">
+                        <!-- Feature Column 1 -->
+                        <div class="feature-column left-features" style="margin-left: 300px;">
+                            <!-- Feature 1: Person Identification -->
+                            <div class="feature-box" style="font-weight: 800; font-size: 25px;">
+                                PERSON<br>IDENTIFICATION
+                            </div>
+                            <div class="description-box" style="text-align:left; margin-left:38px;font-weight: bold;">
+                                <p style="margin: 0; line-height: 1.4;">Accurately identify</p>
+                                <p style="margin: 0; line-height: 1.4;">individuals captured on</p>
+                                <p style="margin: 0; line-height: 1.4;">CCTV using advanced</p>     
+                                <p style="margin: 0; line-height: 1.4;">facial recognition.</p>
+                            </div>
+            
+                            <!-- Feature 2: Crowd Management -->
+                            <div class="feature-box" style="font-weight: 800; font-size: 25px;">
+                                CROWD<br>MANAGEMENT
+                            </div>
+                            <div class="description-box" style="text-align:left; margin-left:38px; font-weight: bold;">
+                                <p style="margin: 0; line-height: 1.4;">Monitor, count and analyze</p>
+                                <p style="margin: 0; line-height: 1.4;">crowd movements for</p>
+                                <p style="margin: 0; line-height: 1.4;">efficient area management.</p>
+                            </div>
+                        </div>
+            
+                        <!-- Feature Column 2 -->
+                        <div class="feature-column right-features">
+                            <!-- Feature 3: Vehicle Detection -->
+                            <div class="feature-box" style="font-weight: 800; font-size: 25px;">
+                                VEHICLE<br>DETECTION
+                            </div>
+                            <div class="description-box" style="text-align:left;; font-weight: bold;margin-left: 38px; margin-right: 240px;">
+                                <p style="margin: 0; line-height: 1.4;">Recognize vehicles by</p>
+                                <p style="margin: 0; line-height: 1.4;">reading number plates and</p>
+                                <p style="margin: 0; line-height: 1.4;">logging entry times.</p>
+                                <p> </p>
+                            </div>
+            
+                            <!-- Feature 4: Home Security -->
+                            <div class="feature-box" style="font-weight: 800; font-size: 25px;">
+                                HOME<br>SECURITY
+                            </div>
+                            <div class="description-box" style="text-align:left;margin-left: 38px; margin-right: 240px; font-weight: bold;">
+                                <p style="margin: 0; line-height: 1.4;">Automatically trigger</p>
+                                <p style="margin: 0; line-height: 1.4;">immediate alerts for</p>
+                                <p style="margin: 0; line-height: 1.4;">unauthorized activity on</p>
+                                <p style="margin: 0; line-height: 1.4;">live video.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Surveillance Assistant Text -->
+            <div class="ai-surveillance">
+                AI SURVEILLANCE ASSISTANT
+            </div>
+        </section>
+
+        <!-- Third Section -->
+        <section id="third-section" class="third-section">
+            <header style="display: flex; justify-content: space-between; align-items: center; padding: 30px 20px;">
+                <div class="logo" style="font-size: 24px; font-weight: bold;">
+                    VISION <span style="color: #C6269E;">AI</span>
+                </div>
+                <nav>
+                    <a href="#" style="color: white; font-weight: bold; text-decoration: none;  font-size: 24px;">HOME</a>
+                </nav>
+            </header>
+            
+            <section class="functions-section">
+                <!-- Title in a separate div -->
+                <div class="functions-title" style="margin-bottom: 100px; font-size:70px; font-weight: bold;">
+                    OUR <span class="highlight"style="color:#C6269E">FUNCTIONS</span>
+                </div>
+
+                <!-- Buttons in a separate div -->
+                <div class="functions-grid-container">
+                    <div class="functions-grid">
+                        <div class="function-card" >
+                            <a href="/person">
+                                <img src="../static/images/person.jpg" alt="Video Surveillance">
+                                <p>VIDEO <span class="highlight"style="color:#C6269E">SURVEILLANCE</span></p>
+                            </a>
+                        </div>
+                        <div class="function-card" >
+                            <a href="/vehicle">
+                                <img src="../static/images/vehicle.jpg" alt="Vehicle Detection">
+                                <p>VEHICLE <span class="highlight"style="color:#C6269E">DETECTION</span></p>
+                            </a>
+                        </div>
+                        <div class="function-card">
+                            <a href="/crowd/crowd">
+                                <img src="../static/images/crowd.jpg" alt="Crowd Management">
+                                <p>CROWD <span class="highlight"style="color:#C6269E">MANAGEMENT</span></p>
+                            </a>
+                        </div>
+                        <div class="function-card" >
+                            <a href="/home_security/home_security">
+                                <img src="../static/images/security.png" alt="Home Security">
+                                <p>HOME <span class="highlight"style="color:#C6269E">SECURITY</span></p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Fourth Section (About) -->
+        <section class="fourth-section">
+            <div class="content">
+                <header class="flex justify-between items-center p-4" style="margin-top:10px">
+                    <div class="text-2xl font-bold"style="margin-left:50px;font-size: 25px;font-weight:bold ">
+                        <span class="text-white">VISION</span>
+                        <span class="text-pink-500">AI</span>
+                    </div>
+                    <nav>
+                        <a href="#" class="text-white text-lg"style="margin-right:50px;font-size: 25px;font-weight:bold">HOME</a>
+                    </nav>
+                </header>
+                <main class="flex flex-col items-center justify-center p-4">
+                    <div class="flex flex-col md:flex-row items-center md:items-start w-full">
+                        <!-- Empty div to push content to the right -->
+                        <div class="md:w-1/2"></div>
+                        <!-- Add margin-top to move the About section down -->
+                        <div class="mt-[80px] md:mt-[80px] md:mr-8 text-center md:text-left md:w-1/2">
+                            <h1 class="text-5xl font-bold tracking-tighter"style="font-size:75px ;font-weight:800">
+                                <span class="text-white">ABO</span><span class="text-pink-500">UT</span>
+                            </h1>
+                            
+                            <p class="mt-4 text-lg"style="margin: 0; line-height: 1.4;margin-top:30px ;font-weight:bold">
+                                Video Surveillance Assistant is an intelligent video analysis tool
+                            </p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">designed to transform surveillance and security monitoring. It</p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">uses advanced AI and computer vision to automatically identify</p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">uses advanced AI and computer vision to automatically identify</p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">and track people, vehicles, and objects in video footage — </p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">eliminating the need for manual review.</p>
+                            <p> </p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;margin-top:10px;font-weight:bold">
+                                Built to handle everything from high-quality CCTV recordings to
+                            </p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">low-resolution surveillance feeds, it works effectively even in</p>
+                            <p class="mt-4 text-lg" style="margin: 0; line-height: 1.4;font-weight:bold">low light, crowded scenes, and partially obstructed views.</p>
+                        </div>
+                    </div>
+                </main>
+                <footer style="margin-top:180px;margin-left:50px ;">
+                    <p class="text-white font-bold"style="color: rgba(255, 255, 255, 0.2);">AI SURVEILLANCE ASSISTANT</p>
+                </footer>
+            </div>
+        </section>
+    </div>
+
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
+        integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+    <script>
+        // JavaScript for Loading Animation
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Check if this is a page navigation or a refresh
+            const pageAccessedByReload = (
+                (window.performance.navigation && window.performance.navigation.type === 1) ||
+                window.performance
+                    .getEntriesByType('navigation')
+                    .map((nav) => nav.type)
+                    .includes('reload')
+            );
+            
+            // Get session flag
+            const hasSeenLoading = sessionStorage.getItem('hasSeenLoading');
+            
+            // Setup the main content
+            document.getElementById('main-content').style.display = 'block';
+            
+            // Make sure GSAP is loaded
+            if (typeof gsap !== 'undefined') {
+                // If page was reloaded OR this is first visit, show loading animation
+                if (pageAccessedByReload || !hasSeenLoading) {
+                    document.getElementById('main-content').style.opacity = '0';
+                    
+                    // Animate the logo name
+                    gsap.fromTo(
+                        ".logo-name",
+                        {
+                            opacity: 0, // Start with text hidden
+                        },
+                        {
+                            opacity: 1, // Fade in to full brightness
+                            duration: 6, // Match the duration of the "V" drawing
+                            delay: 2, // Start fading in after 2 seconds
+                            ease: "power2.inOut", // Smooth fade-in effect
+                        }
+                    );
+
+                    // Create a timeline for smoother transitions
+                    const tl = gsap.timeline();
+                    
+                    // First fade out the loading page
+                    tl.to(".loading-page", {
+                        opacity: 0,
+                        duration: 1, // Faster fade-out
+                        delay: 6, // Reduced delay
+                        ease: "power2.inOut",
+                    });
+                    
+                    // Then fade in the main content
+                    tl.to("#main-content", {
+                        opacity: 1,
+                        duration: 0.8, // Faster fade-in for main content
+                        ease: "power2.inOut",
+                        onStart: function() {
+                            // Ensure main content is displayed
+                            document.getElementById('main-content').style.display = 'block';
+                        },
+                        onComplete: function() {
+                            // Hide loading page after main content is visible
+                            document.querySelector('.loading-page').style.display = 'none';
+                            
+                            // Set flag to indicate user has seen loading animation during this navigation session
+                            sessionStorage.setItem('hasSeenLoading', 'true');
+                        }
+                    });
+                } else {
+                    // Skip animation for internal navigation
+                    document.querySelector('.loading-page').style.display = 'none';
+                    document.getElementById('main-content').style.opacity = '1';
+                }
+            } else {
+                console.error("GSAP library not loaded!");
+                // Fallback if GSAP fails to load
+                document.querySelector('.loading-page').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('main-content').style.opacity = '1';
+            }
+        });
+
+        // Original JavaScript functions
+        function showDetails(functionName) {
+            alert("More details about " + functionName);
+        }
+
+        function scrollToThirdSection() {
+            const thirdSection = document.getElementById('third-section');
+            thirdSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToFirstSection() {
+            const firstSection = document.getElementById('first-section');
+            firstSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

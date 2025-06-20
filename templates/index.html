@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Security System</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --gray-color: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .status-inactive {
+            background-color: var(--gray-color);
+            color: white;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .video-feed {
+            width: 100%;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #000;
+            position: relative;
+        }
+        
+        .video-feed img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .control-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .control-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .control-form label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .control-form input[type="text"],
+        .control-form input[type="file"],
+        .control-form select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .control-form select {
+            cursor: pointer;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .alert-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .alert-item {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--danger-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-item img {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 3px;
+        }
+        
+        .alert-info {
+            flex: 1;
+        }
+        
+        .alert-time {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+        }
+        
+        .badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .people-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .person-badge {
+            background-color: #e9f7fe;
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .notification-success {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .notification-error {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid var(--primary-color);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Home Security System</h1>
+            <div class="status-badge {% if is_running %}status-active{% else %}status-inactive{% endif %}" id="system-status">
+                {% if is_running %}Active{% else %}Inactive{% endif %}
+            </div>
+        </header>
+        
+        <div class="main-grid">
+            <div class="left-column">
+                <div class="panel">
+                    <div class="panel-title">Live Camera Feed</div>
+                    <div class="video-feed">
+                        <img src="{{ url_for('home_security.video_feed') }}" id="video-stream" alt="Camera Feed">
+                        <div class="video-overlay" id="camera-type">
+                            {{ camera_type.upper() }}{% if camera_type == 'ipcam' %} - {{ ip_address }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-title">System Controls</div>
+                    <div class="control-form">
+                        <div class="form-group">
+                            <label for="camera-type">Camera Source</label>
+                            <select id="camera-type-select">
+                                <option value="webcam" {% if camera_type == 'webcam' %}selected{% endif %}>Webcam</option>
+                                <option value="ipcam" {% if camera_type == 'ipcam' %}selected{% endif %}>IP Camera</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="ip-camera-group" {% if camera_type != 'ipcam' %}style="display: none;"{% endif %}>
+                            <label for="ip-address">IP Camera URL</label>
+                            <input type="text" id="ip-address" placeholder="rtsp://username:password@192.168.1.100:554/stream" value="{{ ip_address if ip_address else '' }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <button id="start-btn" class="btn btn-success btn-block" {% if is_running %}disabled{% endif %}>
+                                Start Security System
+                            </button>
+                            <button id="stop-btn" class="btn btn-danger btn-block" {% if not is_running %}disabled{% endif %}>
+                                Stop Security System
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="panel">
+                    <div class="panel-title">
+                        Face Recognition
+                        <span class="badge badge-primary" id="known-faces-count">{{ known_people|length }} known</span>
+                    </div>
+                    
+                    <div class="control-form">
+                        <div class="form-group">
+                            <label for="person-name">Person's Name</label>
+                            <input type="text" id="person-name" placeholder="Enter name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="face-images">Upload Photos (multiple allowed)</label>
+                            <input type="file" id="face-images" multiple accept="image/*">
+                        </div>
+                        
+                        <button id="add-face-btn" class="btn btn-primary">Add Face</button>
+                        <button id="clear-faces-btn" class="btn btn-danger" {% if not known_people %}disabled{% endif %}>
+                            Clear All Faces
+                        </button>
+                    </div>
+                    
+                    <div class="panel-title" style="margin-top: 20px;">Known People</div>
+                    <div class="people-list">
+                        {% if known_people %}
+                            {% for person in known_people %}
+                                <div class="person-badge">{{ person }}</div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No known faces added yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <div class="panel-title">Recent Alerts</div>
+                    <div class="alert-list">
+                        {% if alerts %}
+                            {% for alert in alerts %}
+                                <div class="alert-item">
+                                    <img src="{{ url_for('home_security.serve_alert', filename=alert.filename) }}" alt="Alert Image">
+                                    <div class="alert-info">
+                                        <div>Unknown Person</div>
+                                        <div class="alert-time">{{ alert.timestamp }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No alerts yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <div id="notification-message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Camera Type Selection
+            const cameraTypeSelect = document.getElementById('camera-type-select');
+            const ipCameraGroup = document.getElementById('ip-camera-group');
+            
+            cameraTypeSelect.addEventListener('change', function() {
+                if (this.value === 'ipcam') {
+                    ipCameraGroup.style.display = 'block';
+                } else {
+                    ipCameraGroup.style.display = 'none';
+                }
+            });
+            
+            // Start/Stop Security System
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const systemStatus = document.getElementById('system-status');
+            const videoStream = document.getElementById('video-stream');
+            const cameraType = document.getElementById('camera-type');
+            
+            startBtn.addEventListener('click', function() {
+                const selectedCamera = cameraTypeSelect.value;
+                const ipAddress = document.getElementById('ip-address').value;
+                
+                if (selectedCamera === 'ipcam' && !ipAddress) {
+                    showNotification('Please enter an IP camera URL', 'error');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('camera_type', selectedCamera);
+                if (selectedCamera === 'ipcam') {
+                    formData.append('ip_address', ipAddress);
+                }
+                
+                startBtn.disabled = true;
+                startBtn.innerHTML = '<span class="loader"></span> Starting...';
+                
+                fetch('/home_security/home_security/start_security', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification(data.message, 'success');
+                        systemStatus.textContent = 'Active';
+                        systemStatus.className = 'status-badge status-active';
+                        startBtn.disabled = true;
+                        stopBtn.disabled = false;
+                        
+                        // Update camera type display
+                        let cameraText = selectedCamera.toUpperCase();
+                        if (selectedCamera === 'ipcam') {
+                            cameraText += ' - ' + ipAddress;
+                        }
+                        cameraType.textContent = cameraText;
+                        
+                        // Force refresh of video stream
+                        const timestamp = new Date().getTime();
+                        videoStream.src = '/home_security/home_security/video_feed?' + timestamp;
+                    } else {
+                        showNotification(data.message, 'error');
+                        startBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Failed to start security system', 'error');
+                    startBtn.disabled = false;
+                })
+                .finally(() => {
+                    startBtn.innerHTML = 'Start Security System';
+                });
+            });
+            
+            stopBtn.addEventListener('click', function() {
+                stopBtn.disabled = true;
+                stopBtn.innerHTML = '<span class="loader"></span> Stopping...';
+                
+                fetch('/home_security/home_security/stop_security', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification(data.message, 'success');
+                        systemStatus.textContent = 'Inactive';
+                        systemStatus.className = 'status-badge status-inactive';
+                        startBtn.disabled = false;
+                        stopBtn.disabled = true;
+                        
+                        // Force refresh of video stream to show placeholder
+                        const timestamp = new Date().getTime();
+                        videoStream.src = '/home_security/home_security/video_feed?' + timestamp;
+                    } else {
+                        showNotification(data.message, 'error');
+                        stopBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Failed to stop security system', 'error');
+                    stopBtn.disabled = false;
+                })
+                .finally(() => {
+                    stopBtn.innerHTML = 'Stop Security System';
+                });
+            });
+            
+            // Face Recognition Controls
+            const addFaceBtn = document.getElementById('add-face-btn');
+            const clearFacesBtn = document.getElementById('clear-faces-btn');
+            const personName = document.getElementById('person-name');
+            const faceImages = document.getElementById('face-images');
+            const knownFacesCount = document.getElementById('known-faces-count');
+            const peopleList = document.querySelector('.people-list');
+            
+            addFaceBtn.addEventListener('click', function() {
+                if (!personName.value.trim()) {
+                    showNotification('Please enter a person\'s name', 'error');
+                    return;
+                }
+                
+                if (!faceImages.files.length) {
+                    showNotification('Please select at least one image', 'error');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('name', personName.value.trim());
+                
+                for (const file of faceImages.files) {
+                    formData.append('images', file);
+                }
+                
+                addFaceBtn.disabled = true;
+                addFaceBtn.innerHTML = '<span class="loader"></span> Processing...';
+                
+                fetch('/home_security/home_security/add_face', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification(data.message, 'success');
+                        personName.value = '';
+                        faceImages.value = '';
+                        clearFacesBtn.disabled = false;
+                        
+                        // Update UI with the new person
+                        const currentPeople = Array.from(peopleList.querySelectorAll('.person-badge')).map(badge => badge.textContent);
+                        if (!currentPeople.includes(personName.value.trim())) {
+                            const newPerson = document.createElement('div');
+                            newPerson.className = 'person-badge';
+                            newPerson.textContent = personName.value.trim();
+                            
+                            if (peopleList.querySelector('p')) {
+                                peopleList.innerHTML = '';
+                            }
+                            
+                            peopleList.appendChild(newPerson);
+                            knownFacesCount.textContent = document.querySelectorAll('.person-badge').length + ' known';
+                        }
+                        
+                        // Refresh the page to show updated list
+                        setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        showNotification(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Failed to add face', 'error');
+                })
+                .finally(() => {
+                    addFaceBtn.disabled = false;
+                    addFaceBtn.innerHTML = 'Add Face';
+                });
+            });
+            
+            clearFacesBtn.addEventListener('click', function() {
+                if (!confirm('Are you sure you want to clear all known faces? This action cannot be undone.')) {
+                    return;
+                }
+                
+                clearFacesBtn.disabled = true;
+                clearFacesBtn.innerHTML = '<span class="loader"></span> Clearing...';
+                
+                fetch('/home_security/home_security/clear_faces', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification(data.message, 'success');
+                        peopleList.innerHTML = '<p>No known faces added yet.</p>';
+                        knownFacesCount.textContent = '0 known';
+                        clearFacesBtn.disabled = true;
+                    } else {
+                        showNotification(data.message, 'error');
+                        clearFacesBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Failed to clear faces', 'error');
+                    clearFacesBtn.disabled = false;
+                })
+                .finally(() => {
+                    clearFacesBtn.innerHTML = 'Clear All Faces';
+                });
+            });
+            
+            // Notification System
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+
+            function showNotification(message, type) {
+                notificationMessage.textContent = message;
+                notification.className = 'notification notification-' + type + ' show';
+
+                setTimeout(() => {
+                    notification.className = 'notification';
+                }, 3000);
+            }
+
+            // Periodically check system status
+            function checkStatus() {
+                fetch('/home_security/home_security/get_status')
+                .then(response => response.json())
+                .then(data => {
+                    // Update UI based on system status
+                    systemStatus.textContent = data.is_running ? 'Active' : 'Inactive';
+                    systemStatus.className = 'status-badge ' + (data.is_running ? 'status-active' : 'status-inactive');
+                    startBtn.disabled = data.is_running;
+                    stopBtn.disabled = !data.is_running;
+
+                    knownFacesCount.textContent = data.known_people_count + ' known';
+                    clearFacesBtn.disabled = data.known_people_count === 0;
+
+                    // Update camera type display
+                    let cameraText = data.camera_type.toUpperCase();
+                    if (data.camera_type === 'ipcam' && data.ip_address) {
+                        cameraText += ' - ' + data.ip_address;
+                    }
+                    cameraType.textContent = cameraText;
+
+                    // Check for new alerts
+                    if (data.has_new_alert) {
+                        showNotification('Alert: Unknown face detected!', 'error');
+                    }
+
+                    // Check if email was sent
+                    if (data.email_sent) {
+                        showNotification('Alert email sent successfully!', 'success');
+                        // Reset the email_sent flag after showing the notification
+                        fetch('/home_security/home_security/reset_email_sent', { method: 'POST' });
+                    }
+                })
+                .catch(error => {
+                    console.error('Status check error:', error);
+                });
+            }
+
+            // Check status every 10 seconds
+            setInterval(checkStatus, 10000);
+        });
+    </script>
+</body>
+</html>
