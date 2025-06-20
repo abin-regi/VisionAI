@@ -14,20 +14,20 @@
 
 ---
 
-##▶️ Usage
+## ▶️ Usage
 - Place a reference image in data/reference.jpg
 
 - Place the target video in data/sample_video.mp4
 
 Run the application:
 
-bash
-Copy
-Edit
-python run.py
-Results (timestamps, matched frames) will appear in the outputs/ folder.
+- bash
+- Copy
+- Edit
+- python run.py
+- Results (timestamps, matched frames) will appear in the outputs/ folder.
 
 
-##⚠️ Disclaimer
+## ⚠️ Disclaimer
 This project is intended for educational use only. Ensure legal compliance before using facial recognition or surveillance technologies in real-world environments.
 
