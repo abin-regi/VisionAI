@@ -31,7 +31,7 @@
 
 ## 📂 Folder Structure
 
-'''
+```
 
 📦 VisionAI
 ├── app/ → Core modules (face, plate, video)
@@ -41,7 +41,7 @@
 ├── run.py → Main script
 └── README.md
 
-'''
+```
 ---
 
 ## ⚙️ Getting Started
