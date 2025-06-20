@@ -1,6 +1,6 @@
 # VisionAI 
 
-**VisionAI : AI powered Video Surveillance Assistant** is an AI-powered tool that automatically identifies and tracks individuals and vehicles in CCTV footage. Using the **Buffalo model** for facial recognition and optical methods for license plate detection, it provides accurate results even from low-quality surveillance videos.
+**VisionAI : Video Surveillance Assistant** is an AI-powered tool that automatically identifies and tracks individuals and vehicles in CCTV footage. Using the **Buffalo model** for facial recognition and optical methods for license plate detection, it provides accurate results even from low-quality surveillance videos.
 
 ---
 
