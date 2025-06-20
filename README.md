@@ -58,11 +58,15 @@ Download from:
 🔗 [InsightFace Model Zoo – Buffalo_L](https://github.com/deepinsight/insightface/wiki/Model-Zoo)  
 
 Place the downloaded folder like this:
+```
+
 models/
 └── buffalo_l/
 ├── model-symbol.json
 ├── model-0000.params
 └── ... (other files)
+
+```
 
 **Prepare Input**  
 Place:  
@@ -87,5 +91,5 @@ Place:
 
 ---
 
-⚠️ **Disclaimer**  
+## ⚠️ **Disclaimer**  
 This project is for educational use only. Ensure ethical and legal compliance before deploying in real-world scenarios involving surveillance or biometric analysis.
